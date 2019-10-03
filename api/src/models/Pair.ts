@@ -1,7 +1,12 @@
 export interface IPair {
   id: string;
-  members: string[];
   count: number;
+}
+
+export interface IPairData {
+  id: string;
+  count: number;
+  members: string[];
 }
 
 export default class Pair implements IPair {
@@ -37,5 +42,13 @@ export default class Pair implements IPair {
 
   addCount() {
     this._count = this._count + 1;
+  }
+
+  format(): IPairData {
+    return {
+      id: this._id,
+      members: Array.from(this._members),
+      count: this._count,
+    };
   }
 }

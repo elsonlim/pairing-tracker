@@ -30,8 +30,7 @@ describe("PairMatrix", () => {
     expect(pairingMatrix.getPairs()).toHaveLength(1);
 
     const pair = pairingMatrix.getPairs()[0];
-    expect(pair.contains("John"));
-    expect(pair.contains("Mary"));
+    expect(pair.members).toEqual(expect.arrayContaining(["Mary", "John"]));
     expect(pair.count).toBe(0);
   });
 
