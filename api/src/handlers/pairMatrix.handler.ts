@@ -1,55 +1,36 @@
-import PairMatrix from "../models/PairMatrix";
-import e = require("express");
+import e from "express";
+import pairMatrixService from "../services/pairMatrix.services";
 
-const pairMatrixes: PairMatrix[] = [];
-export const create = (req: e.Request, res: e.Response) => {
-  const pairMatrix = new PairMatrix();
-  pairMatrixes.push(pairMatrix);
-  res.json({ id: pairMatrix.id });
-};
-
-export const addMember = (req: e.Request, res: e.Response) => {
-  const { id } = req.params;
-  const { name } = req.body;
-  const matrixToAddPairs = pairMatrixes.find(matrix => matrix.id === id);
-  if (!matrixToAddPairs) {
-    return res.sendStatus(404);
-  }
-
-  if (matrixToAddPairs.addMember(name)) {
-    return res.sendStatus(200);
-  } else {
-    return res.sendStatus(204);
-  }
-};
-
-export const getPairs = (req: e.Request, res: e.Response) => {
-  const { id } = req.params;
-
-  const matrixToAddPairs = pairMatrixes.find(matrix => matrix.id === id);
-  if (!matrixToAddPairs) {
-    return res.sendStatus(404);
-  }
-
-  return res.json({
-    id: matrixToAddPairs.id,
-    pairs: matrixToAddPairs.getPairs(),
+export const create = async (req: e.Request, res: e.Response) => {
+  const matrix = await pairMatrixService.create();
+  res.json({
+    id: matrix.id,
   });
 };
 
-export const increaseCount = (req: e.Request, res: e.Response) => {
+export const addMember = async (req: e.Request, res: e.Response) => {
+  const { id } = req.params;
+  const newName = req.body.name;
+  await pairMatrixService.addMember(id, newName);
+  res.sendStatus(200);
+};
+
+export const getPairs = async (req: e.Request, res: e.Response) => {
+  const { id } = req.params;
+  const pairs = await pairMatrixService.getPairs(id);
+
+  return res.json({
+    id,
+    pairs,
+  });
+};
+
+export const increaseCount = async (req: e.Request, res: e.Response) => {
   const { id, pairId } = req.params;
 
-  const matrixToAddPairs = pairMatrixes.find(matrix => matrix.id === id);
-  if (!matrixToAddPairs) {
+  const matrix = await pairMatrixService.increaseCount(id, pairId);
+  if (!matrix) {
     return res.sendStatus(404);
   }
-
-  const pair = matrixToAddPairs.getPairById(pairId);
-  if (!pair) {
-    return res.sendStatus(404);
-  }
-  pair.addCount();
-
-  return res.json();
+  return res.sendStatus(200);
 };
