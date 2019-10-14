@@ -4,13 +4,11 @@ import { IUserDoc } from "../interfaces/IUser";
 const userSchema: Schema = new Schema({
   email: {
     type: String,
-    index: true,
-    unique: true,
+    unique: [true, "email needs to be unique"],
     required: [true, "email cannot be blank"],
   },
   username: {
     type: String,
-    index: true,
     unique: true,
     required: [true, "username cannot be blank"],
   },

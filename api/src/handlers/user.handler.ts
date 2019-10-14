@@ -14,8 +14,31 @@ export const createUser = async (
     username,
     password: passwordHash,
   });
-
   await user.save();
-
   res.json({ email, username });
+};
+
+export const loginUser = async (
+  req: express.Request,
+  res: express.Response,
+) => {
+  const { email, password } = req.body;
+
+  const userFromDb = await User.findOne({
+    email,
+  });
+
+  if (!userFromDb) {
+    console.log("user not in db");
+    return res.sendStatus(401);
+  }
+
+  const isUser = await compare(password, userFromDb.password);
+
+  if (!isUser) {
+    console.log("password does not match");
+    return res.sendStatus(401);
+  }
+
+  res.sendStatus(200);
 };
