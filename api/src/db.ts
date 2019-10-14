@@ -1,10 +1,17 @@
 import mongoose from "mongoose";
+
 const mongoOptions: {
   useNewUrlParser: boolean;
+  useUnifiedTopology: boolean;
+  useCreateIndex: boolean;
+  useFindAndModify: boolean;
   user?: string;
   pass?: string;
 } = {
   useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+  useFindAndModify: true,
 };
 
 console.log(`connecting to ${process.env.DB_HOST}`);

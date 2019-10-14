@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --runInBand",
+    "test-w": "jest --runInBand --watchAll",
     "start": "node build/index.js",
     "nodemon": "nodemon build/index.js",
     "lint": "tslint -c tslint.json -p tsconfig.json",

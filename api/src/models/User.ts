@@ -1,7 +1,5 @@
 import { Schema, Model, model } from "mongoose";
 import { IUserDoc } from "../interfaces/IUser";
-import { string } from "prop-types";
-import { stringify } from "querystring";
 
 const userSchema: Schema = new Schema({
   email: {
@@ -16,7 +14,7 @@ const userSchema: Schema = new Schema({
     unique: true,
     required: [true, "username cannot be blank"],
   },
-  password: string,
+  password: String,
 });
 
-export const PairMatrix: Model<IUserDoc> = model<IUserDoc>("User", userSchema);
+export const User: Model<IUserDoc> = model<IUserDoc>("User", userSchema);
